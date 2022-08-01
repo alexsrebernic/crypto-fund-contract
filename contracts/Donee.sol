@@ -13,6 +13,8 @@ contract Donee {
     address public constant DONATIONS_CONTRACT = 0x8016619281F888d011c84d2E2a5348d9417c775B;
     DonationsInterface DonationsContract = DonationsInterface(DONATIONS_CONTRACT);
     DataDonee public  dataDonee;
+
+    event donation (address indexed _from, address indexed _to, uint amount);
     struct DataDonee {
         address owner;
         uint  balance;
@@ -50,6 +52,7 @@ contract Donee {
         s_addressToAmountDonated[msg.sender] += msg.value;
         s_donors.push(msg.sender);
         dataDonee.balance += msg.value;
+        emit donation(msg.sender,dataDonee.owner,msg.value);
     }
     function withdraw() public onlyOwner {
         address[] memory donors = s_donors;
