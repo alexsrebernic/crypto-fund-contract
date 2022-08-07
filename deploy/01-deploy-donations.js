@@ -1,5 +1,7 @@
 const { getNamedAccounts, deployments, network } = require("hardhat")
 const { networkConfig, developmentChains } = require("../helper-hardhat-config")
+const {verify} = require("../utils/verify")
+const fs = require('fs')
 module.exports = async ({ getNamedAccounts, deployments }) => {
     const { deploy, log } = deployments;
     const { deployer } = await getNamedAccounts();
@@ -10,6 +12,9 @@ module.exports = async ({ getNamedAccounts, deployments }) => {
         waitConfirmations: network.config.blockConfirmations || 1,
     })
     log(`Donations deployed at ${donations.address}`);
+    fs.writeFileSync('../utils/Donations_address.txt',donations.address,(err) => {
+        if(err) log(err);
+    })
     if (
         !developmentChains.includes(network.name) &&
         (process.env.ETHERSCAN_API_KEY || process.env.BSCSCAN_API_KEY)

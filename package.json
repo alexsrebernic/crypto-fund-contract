@@ -8,6 +8,7 @@
     "hardhat-deploy": "^0.11.12"
   },
   "dependencies": {
-    "@chainlink/contracts": "^0.4.2"
+    "@chainlink/contracts": "^0.4.2",
+    "dotenv": "^16.0.1"
   }
 }
