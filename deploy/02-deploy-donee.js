@@ -15,17 +15,15 @@ module.exports = async ({ getNamedAccounts, deployments }) => {
     } else {
         ethUsdPriceFeedAddress = networkConfig[chainId]["ethUsdPriceFeed"]
     }
-    fs.readFileSync('../utils/Donations_address.txt',(err, data) => {
-        if(err) throw err;
-        donationsAddress = data.toString();
-    })
-    const donations = await deploy("Donee", {
+    const donationsContract = await deployments.get("Donations")
+    donationsAddress = donationsContract.address
+    const donee = await deploy("Donee", {
         from: deployer,
         args:["Alex","Srebernic","#4287f5","Test","07/08/2022",ethUsdPriceFeedAddress,donationsAddress],
         log: true,
         waitConfirmations: network.config.blockConfirmations || 1,
     })
-    log(`Donations deployed at ${donations.address}`);
+    log(`Donee deployed at ${donee.address}`);
     if (
         !developmentChains.includes(network.name) &&
         (process.env.ETHERSCAN_API_KEY || process.env.BSCSCAN_API_KEY)

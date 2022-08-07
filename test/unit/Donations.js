@@ -4,7 +4,7 @@ const { developmentChains } = require("../../helper-hardhat-config")
 
 !developmentChains.includes(network.name)
 ? describe.skip
-: describe("FundMe", function () {
+: describe("Donations", function () {
       let donations
       let donee
       let deployer
