@@ -10,5 +10,8 @@
   "dependencies": {
     "@chainlink/contracts": "^0.4.2",
     "dotenv": "^16.0.1"
+  },
+  "scripts": {
+    "test": "hardhat test"
   }
 }

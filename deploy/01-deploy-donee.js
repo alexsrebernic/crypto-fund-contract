@@ -15,22 +15,13 @@ module.exports = async ({ getNamedAccounts, deployments }) => {
     } else {
         ethUsdPriceFeedAddress = networkConfig[chainId]["ethUsdPriceFeed"]
     }
-    const donationsContract = await deployments.get("Donations")
-    donationsAddress = donationsContract.address
     const donee = await deploy("Donee", {
         from: deployer,
-        args:["Alex","Srebernic","#4287f5","Test","07/08/2022",ethUsdPriceFeedAddress,donationsAddress],
+        args:["Alex","Srebernic","#4287f5","Test",ethUsdPriceFeedAddress],
         log: true,
         waitConfirmations: network.config.blockConfirmations || 1,
     })
     log(`Donee deployed at ${donee.address}`);
-    if (
-        !developmentChains.includes(network.name) &&
-        (process.env.ETHERSCAN_API_KEY || process.env.BSCSCAN_API_KEY)
-    ) {
-        await verify(fundMe.address)
-    }
-
 }
 
 module.exports.tags = ["all", "donee"]
