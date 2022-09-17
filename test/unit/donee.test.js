@@ -27,13 +27,6 @@ const { developmentChains } = require("../../helper-hardhat-config")
             const response = Number(await donee.getCurrentBalance())
             expect(response).to.be.an('number').equal(0)
           })
-          it("Get data donee", async () => {
-            const response = await donee.getDataDonee()
-            const values = [ 'Alex', 'Srebernic', 'Test', '#4287f5' ]
-            const data = response.slice(0,4)
-            expect(values).to.have.members(data)
-          
-          })
       })
       describe("Write", () => {
         describe("Donate", async () => {
@@ -48,6 +41,9 @@ const { developmentChains } = require("../../helper-hardhat-config")
             await donee.donate({ value: sendValue })
             const response = await donee.getDonor(0)
             expect(response).to.be.equal(deployer)
+          })
+          it("Check if contract emit's", async () => {
+            await expect(donee.donate({ value: sendValue })).to.emit(donee, "donation")
           })
           it("Fails if you don't send enough ETH", async () => {
             await expect(await donee.donate()).to.be

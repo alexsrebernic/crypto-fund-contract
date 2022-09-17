@@ -17,11 +17,18 @@ module.exports = async ({ getNamedAccounts, deployments }) => {
     }
     const donee = await deploy("Donee", {
         from: deployer,
-        args:["Alex","Srebernic","#4287f5","Test",ethUsdPriceFeedAddress],
+        args:[ethUsdPriceFeedAddress],
         log: true,
         waitConfirmations: network.config.blockConfirmations || 1,
     })
     log(`Donee deployed at ${donee.address}`);
+    if (
+        !developmentChains.includes(network.name) && 
+        (process.env.ETHERSCAN_API_KEY && process.env.BSCSCAN_API_KEY)
+    ) { 
+        await verify(donee.address,[ethUsdPriceFeedAddress])
+    }
+    log('---------------------------------------------')
 }
 
 module.exports.tags = ["all", "donee"]
