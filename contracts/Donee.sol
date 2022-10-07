@@ -6,7 +6,7 @@ error FundMe__NotOwner();
 
 import "@chainlink/contracts/src/v0.8/interfaces/AggregatorV3Interface.sol";
 contract Donee {
-    address private immutable i_owner;
+    address public immutable i_owner;
     uint public MINIMUN_USD = 1 * 1e18;
     address[] public s_donors;
     mapping(address => uint256) public s_addressToAmountDonated;
@@ -16,8 +16,8 @@ contract Donee {
         if (msg.sender != i_owner) revert FundMe__NotOwner();
         _;
     }
-    constructor(address _aggregatorV3Interface){
-        i_owner = msg.sender;
+    constructor(address owner,address _aggregatorV3Interface){
+        i_owner = owner;
         aggregatorV3Contract = AggregatorV3Interface( _aggregatorV3Interface );
     }
     function donate() public payable {

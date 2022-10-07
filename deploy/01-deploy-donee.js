@@ -1,4 +1,4 @@
-const { getNamedAccounts, deployments, network } = require("hardhat")
+const { network } = require("hardhat")
 const { networkConfig, developmentChains } = require("../helper-hardhat-config")
 const {verify} = require("../utils/verify")
 const fs = require('fs')
@@ -7,7 +7,6 @@ module.exports = async ({ getNamedAccounts, deployments }) => {
     const { deploy, log } = deployments
     const { deployer } = await getNamedAccounts()
     const chainId = network.config.chainId
-    let donationsAddress;
     let ethUsdPriceFeedAddress
     if (chainId == 31337) {
         const ethUsdAggregator = await deployments.get("MockV3Aggregator")
@@ -19,8 +18,9 @@ module.exports = async ({ getNamedAccounts, deployments }) => {
         from: deployer,
         args:[ethUsdPriceFeedAddress],
         log: true,
-        waitConfirmations: network.config.blockConfirmations || 1,
+        waitConfirmations: network.config.blockConfirmations || 5,
     })
+    await donee.deployed()
     log(`Donee deployed at ${donee.address}`);
     if (
         !developmentChains.includes(network.name) && 

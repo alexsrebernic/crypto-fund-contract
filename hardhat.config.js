@@ -33,7 +33,9 @@ module.exports = {
     },
     "binance-testnet": {
       url: BSCTESTNET_RPC_URL,
-      accounts:[PRIVATE_KEY]
+      accounts:[PRIVATE_KEY],
+      chainId:97,
+      blockConfirmations: 4
     }
   },
   // gasReporter: {
