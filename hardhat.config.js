@@ -4,7 +4,7 @@ require("dotenv").config()
 
 /** @type import('hardhat/config').HardhatUserConfig */
 const PRIVATE_KEY = process.env.PRIVATE_KEY;
-const RINKEBY_RPC_URL = process.env.RINKEBY_RPC_URL;
+const GOERLI_RPC_URL = process.env.GOERLI_RPC_URL;
 const BSCTESTNET_RPC_URL = process.env.BSCTESTNET_RPC_URL;
 const ETHERSCAN_API_KEY = process.env.ETHERSCAN_API_KEY;
 const BSCSCAN_API_KEY = process.env.BSCSCAN_API_KEY
@@ -23,13 +23,14 @@ module.exports = {
   networks: {
     hardhat: {
       chainId: 31337,
-      // gasPrice: 130000000000,
+      gasPrice: 130000000000,
     },
-    "rinkeby": {
-      url: RINKEBY_RPC_URL,
+    "goerli": {
+      url: GOERLI_RPC_URL,
       accounts:[PRIVATE_KEY],
-      chainId: 4,
+      chainId: 5,
       blockConfirmations: 6,
+      gasPrice: 30000000000, // this is 30 Gwei
     },
     "binance-testnet": {
       url: BSCTESTNET_RPC_URL,
@@ -48,12 +49,17 @@ module.exports = {
   bscscan: {
     apiKey: BSCSCAN_API_KEY
   },
+  gasReporter: {
+    enabled: true,
+    currency: "USD",
+    outputFile: "gas-report.txt",
+    noColors: true,
+    // coinmarketcap: COINMARKETCAP_API_KEY,
+},
   namedAccounts: {
     deployer: {
       default: 0,
+      1: 0,
     },
-    user: {
-      default: 1,
-    }
   }
 };

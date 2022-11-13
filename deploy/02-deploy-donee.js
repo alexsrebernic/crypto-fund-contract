@@ -8,6 +8,7 @@ module.exports = async ({ getNamedAccounts, deployments }) => {
     const { deployer } = await getNamedAccounts()
     const chainId = network.config.chainId
     let ethUsdPriceFeedAddress
+    log(`chainID : ${chainId}`)
     if (chainId == 31337) {
         const ethUsdAggregator = await deployments.get("MockV3Aggregator")
         ethUsdPriceFeedAddress = ethUsdAggregator.address
@@ -15,12 +16,12 @@ module.exports = async ({ getNamedAccounts, deployments }) => {
         ethUsdPriceFeedAddress = networkConfig[chainId]["ethUsdPriceFeed"]
     }
     const donee = await deploy("Donee", {
+        contract:"Donee",
         from: deployer,
-        args:[ethUsdPriceFeedAddress],
+        args:[deployer,ethUsdPriceFeedAddress],
         log: true,
-        waitConfirmations: network.config.blockConfirmations || 5,
+        waitConfirmations: network.config.blockConfirmations || 1,
     })
-    await donee.deployed()
     log(`Donee deployed at ${donee.address}`);
     if (
         !developmentChains.includes(network.name) && 
