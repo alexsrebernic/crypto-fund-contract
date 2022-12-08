@@ -8,10 +8,11 @@ contract Factory {
     constructor(address _aggregatorV3Interface){
         aggregatorV3Interface = _aggregatorV3Interface;
     }
-    function createNewDonee() public {
+    function createNewDonee() public returns(Donee) {
         Donee d = new Donee(msg.sender, aggregatorV3Interface);
         deployedContracts.push(d);
         emit newDonee(msg.sender);
+        return d;
     }
     function getDonors() public view returns (Donee[] memory){
         return deployedContracts;
