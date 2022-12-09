@@ -11,7 +11,7 @@ contract Factory {
     function createNewDonee() public returns(Donee) {
         Donee d = new Donee(msg.sender, aggregatorV3Interface);
         deployedContracts.push(d);
-        emit newDonee(msg.sender);
+        emit newDonee(address(d));
         return d;
     }
     function getDonors() public view returns (Donee[] memory){
